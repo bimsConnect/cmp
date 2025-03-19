@@ -2,6 +2,7 @@
 
 import { motion, AnimatePresence } from "framer-motion"
 import Link from "next/link"
+import Image from "next/image" // Add this import
 import { useEffect, useState } from "react"
 import { ArrowRight, ChevronDown, Phone, MessageCircle } from "lucide-react"
 import { Button } from "@/components/ui/Button"
@@ -35,13 +36,22 @@ export function HeroClient({ slides }: HeroClientProps) {
         <AnimatePresence initial={false}>
           <motion.div
             key={currentSlideIndex}
-            className="absolute inset-0 bg-cover bg-center"
-            style={{ backgroundImage: `url('${slides[currentSlideIndex].image}')` }}
+            className="absolute inset-0"
             initial={{ opacity: 0, scale: 1.1 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 1.05 }}
             transition={{ duration: 1.5, ease: "easeInOut" }}
-          />
+          >
+            <Image
+              src={slides[currentSlideIndex].image}
+              alt={slides[currentSlideIndex].title}
+              fill
+              priority
+              quality={100}
+              className="object-cover object-center"
+              sizes="100vw"
+            />
+          </motion.div>
         </AnimatePresence>
       </div>
 
@@ -112,11 +122,10 @@ export function HeroClient({ slides }: HeroClientProps) {
             </Button>
           </Link>
 
-
           {/* Hubungi Kami dengan Phone Link */}
           <a
             href="tel:+6285218729008"
-            className="inline-block"
+            className="inline-block sm:inline-block md:hidden" // Show on mobile/tablet (<768px), hide on desktop
           >
             <Button className="group relative overflow-hidden bg-secondary hover:bg-secondary/90 text-white px-8 py-6 text-lg shadow-lg">
               <span className="relative z-10 flex items-center">

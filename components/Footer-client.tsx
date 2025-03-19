@@ -15,7 +15,7 @@ export function FooterClient({ currentYear }: FooterClientProps) {
     <footer className="bg-gray-900 text-white">
       <div className="container mx-auto px-4">
         {/* Main Footer */}
-        <div className="py-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="py-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {/* Company Info */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -50,37 +50,11 @@ export function FooterClient({ currentYear }: FooterClientProps) {
             </div>
           </motion.div>
 
-          {/* Quick Links */}
+          {/* Services - Updated delay */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="space-y-4"
-          >
-            <h3 className="text-lg font-semibold mb-4">Link Cepat</h3>
-            <ul className="space-y-2">
-              {[
-                { name: "Beranda", href: "/" },
-                { name: "Tentang Kami", href: "#about" },
-                { name: "Properti", href: "#gallery" },
-                { name: "Blog", href: "#blog" },
-                { name: "Kontak", href: "#contact" },
-                { name: "Testimoni", href: "#testimonials" },
-              ].map((link) => (
-                <li key={link.name}>
-                  <Link href={link.href} className="text-gray-400 hover:text-primary transition-colors">
-                    {link.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </motion.div>
-
-          {/* Services */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
+            transition={{ duration: 0.6, delay: 0.1 }} // Updated delay
             className="space-y-4"
           >
             <h3 className="text-lg font-semibold mb-4">Layanan Kami</h3>
@@ -103,11 +77,11 @@ export function FooterClient({ currentYear }: FooterClientProps) {
             </ul>
           </motion.div>
 
-          {/* Newsletter */}
+          {/* Newsletter - Updated delay */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
+            transition={{ duration: 0.6, delay: 0.2 }} // Updated delay
             className="space-y-4"
           >
             <h3 className="text-lg font-semibold mb-4">Berlangganan Newsletter</h3>

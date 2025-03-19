@@ -3,6 +3,7 @@ import { Inter } from "next/font/google"
 import "./globals.css"
 import { ThemeProvider } from "@/components/ThemeProvider"
 import AnalyticsTracker from "@/components/AnalyticsTracker"
+import { WhatsAppButton } from "@/components/WhatsappButton"
 
 const inter = Inter({ subsets: ["latin"] })
 export const metadata = {
@@ -34,6 +35,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
           {children}
+          <WhatsAppButton />
           <AnalyticsTracker />
         </ThemeProvider>
       </body>

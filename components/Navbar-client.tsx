@@ -2,10 +2,10 @@
 
 import { useState, useEffect } from "react"
 import Link from "next/link"
-import { usePathname } from "next/navigation" // Add this import
+import { usePathname } from "next/navigation"
 import { Button } from "@/components/ui/Button"
 import { motion, AnimatePresence } from "framer-motion"
-import { Menu, X } from "lucide-react"
+import { Menu, X, DoorOpen } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 interface NavLink {
@@ -20,29 +20,33 @@ interface NavbarClientProps {
 export function NavbarClient({ navLinks }: NavbarClientProps) {
   const [isScrolled, setIsScrolled] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const pathname = usePathname() // Get current pathname
+  const pathname = usePathname()
   
-  // Check if current page should have dark text
-  const isDarkTextPage = ['/blog', '/gallery'].includes(pathname)
+  // Check if current page should have dark text and static navbar
+  const isDarkTextPage = ['/blog', '/gallery'].includes(pathname) || pathname.startsWith('/blog/')
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 50) {
-        setIsScrolled(true)
-      } else {
-        setIsScrolled(false)
+      // Only apply scroll effect if not on blog, gallery, or blog slug pages
+      if (!isDarkTextPage) {
+        setIsScrolled(window.scrollY > 50)
       }
     }
 
     window.addEventListener("scroll", handleScroll)
     return () => window.removeEventListener("scroll", handleScroll)
-  }, [])
+  }, [isDarkTextPage])
 
   return (
     <header
       className={cn(
-        "fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-in-out",
-        isScrolled ? "bg-white shadow-md py-2" : "bg-transparent py-4",
+        "fixed top-0 left-0 right-0 z-50",
+        isDarkTextPage 
+          ? "bg-white shadow-md py-2" // Static style for blog/gallery
+          : cn(
+              "transition-all duration-300 ease-in-out",
+              isScrolled ? "bg-white shadow-md py-2" : "bg-transparent py-4"
+            )
       )}
     >
       <div className="container mx-auto px-4 flex items-center justify-between">
@@ -79,9 +83,14 @@ export function NavbarClient({ navLinks }: NavbarClientProps) {
               {link.name}
             </Link>
           ))}
-          <Button className="bg-primary hover:bg-primary/90 text-white">
-            <Link href="/login">Login</Link>
-          </Button>
+          <Link href="/login">
+            <Button 
+              className="bg-primary hover:bg-primary/90 text-white w-10 h-10 p-0" 
+              title="Login"
+            >
+              <DoorOpen className="w-5 h-5" />
+            </Button>
+          </Link>
         </nav>
 
         {/* Mobile Menu Button */}
@@ -115,9 +124,14 @@ export function NavbarClient({ navLinks }: NavbarClientProps) {
                   {link.name}
                 </Link>
               ))}
-              <Button className="bg-primary hover:bg-primary/90 text-white w-full">
-                <Link href="/login">Login</Link>
-              </Button>
+              <Link href="/login" onClick={() => setMobileMenuOpen(false)}>
+                <Button 
+                  className="bg-primary hover:bg-primary/90 text-white w-full flex items-center justify-center"
+                  title="Login"
+                >
+                  <DoorOpen className="w-5 h-5" />
+                </Button>
+              </Link>
             </div>
           </motion.div>
         )}

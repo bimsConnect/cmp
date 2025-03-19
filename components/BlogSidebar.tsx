@@ -1,7 +1,8 @@
 "use client"
 
 import type React from "react"
-import { useState } from "react"
+import { useState, useEffect } from "react"
+import { useRouter, useSearchParams } from "next/navigation"
 import Link from "next/link"
 import Image from "next/image"
 import { format } from "date-fns"
@@ -30,7 +31,17 @@ interface BlogSidebarProps {
 }
 
 export default function BlogSidebar({ categories, selectedCategory, onCategorySelect, recentPosts }: BlogSidebarProps) {
+  const router = useRouter()
+  const searchParams = useSearchParams()
   const [searchTerm, setSearchTerm] = useState("")
+
+  // Initialize search term from URL if exists
+  useEffect(() => {
+    const querySearch = searchParams.get("search")
+    if (querySearch) {
+      setSearchTerm(querySearch)
+    }
+  }, [searchParams])
 
   const formatDate = (dateString: string) => {
     try {
@@ -42,8 +53,30 @@ export default function BlogSidebar({ categories, selectedCategory, onCategorySe
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault()
-    // Implement search functionality if needed
-    console.log("Searching for:", searchTerm)
+    // Update URL with search parameter
+    const params = new URLSearchParams()
+    if (searchTerm) {
+      params.set("search", searchTerm)
+    }
+    if (selectedCategory) {
+      params.set("category", selectedCategory)
+    }
+    router.push(`/blog?${params.toString()}`)
+  }
+
+  const handleCategoryClick = (category: string | null) => {
+    // Update URL with category parameter
+    const params = new URLSearchParams(searchParams.toString())
+    if (category) {
+      params.set("category", category)
+    } else {
+      params.delete("category")
+    }
+    if (searchTerm) {
+      params.set("search", searchTerm)
+    }
+    router.push(`/blog?${params.toString()}`)
+    onCategorySelect?.(category)
   }
 
   return (
@@ -86,7 +119,7 @@ export default function BlogSidebar({ categories, selectedCategory, onCategorySe
                 className={`px-3 py-2 rounded-md cursor-pointer transition-colors ${
                   !selectedCategory ? "bg-primary text-white" : "hover:bg-gray-100"
                 }`}
-                onClick={() => onCategorySelect?.(null)}
+                onClick={() => handleCategoryClick(null)}
               >
                 Semua Kategori
               </div>
@@ -96,7 +129,7 @@ export default function BlogSidebar({ categories, selectedCategory, onCategorySe
                   className={`px-3 py-2 rounded-md cursor-pointer transition-colors ${
                     selectedCategory === category ? "bg-primary text-white" : "hover:bg-gray-100"
                   }`}
-                  onClick={() => onCategorySelect?.(category)}
+                  onClick={() => handleCategoryClick(category)}
                 >
                   {category}
                 </div>
@@ -152,22 +185,6 @@ export default function BlogSidebar({ categories, selectedCategory, onCategorySe
               </Button>
             </Link>
           </div>
-        </CardContent>
-      </Card>
-
-      {/* Subscribe Card */}
-      <Card className="shadow-md hover:shadow-lg transition-shadow bg-primary/5">
-        <CardHeader className="pb-2">
-          <CardTitle className="text-lg font-medium">Berlangganan Newsletter</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p className="text-sm text-gray-600 mb-4">
-            Dapatkan artikel terbaru dan tips properti langsung ke email Anda
-          </p>
-          <form className="space-y-2">
-            <Input placeholder="Email Anda" type="email" />
-            <Button className="w-full bg-primary hover:bg-primary/90">Berlangganan</Button>
-          </form>
         </CardContent>
       </Card>
     </div>
