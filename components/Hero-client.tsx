@@ -2,7 +2,11 @@
 
 import { motion, AnimatePresence } from "framer-motion"
 import Link from "next/link"
+<<<<<<< HEAD
 import Image from "next/image" // Add this import
+=======
+import Image from "next/image"
+>>>>>>> 86454b7 (fix package.json)
 import { useEffect, useState } from "react"
 import { ArrowRight, ChevronDown, Phone, MessageCircle } from "lucide-react"
 import { Button } from "@/components/ui/Button"
@@ -44,12 +48,19 @@ export function HeroClient({ slides }: HeroClientProps) {
           >
             <Image
               src={slides[currentSlideIndex].image}
+<<<<<<< HEAD
               alt={slides[currentSlideIndex].title}
+=======
+              alt="Background"
+>>>>>>> 86454b7 (fix package.json)
               fill
               priority
               quality={100}
               className="object-cover object-center"
+<<<<<<< HEAD
               sizes="100vw"
+=======
+>>>>>>> 86454b7 (fix package.json)
             />
           </motion.div>
         </AnimatePresence>
